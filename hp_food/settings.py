@@ -92,9 +92,9 @@ DATABASES_LIST = [{
 #server
       'default': {
          'ENGINE': 'django.db.backends.postgresql',
-         'NAME': 'bridal',                      
-         'USER': 'huytruong',
-         'PASSWORD': 'Linhtr@ng2023',
+         'NAME': 'hpfoods',                      
+         'USER': 'admin',
+         'PASSWORD': 'Ecotr@ding2023',
          'HOST': 'localhost',
          'PORT': '',
      }
@@ -110,7 +110,7 @@ DATABASES_LIST = [{
         'PORT': '5432',
     }
 }]
-DATABASES = DATABASES_LIST[1]
+DATABASES = DATABASES_LIST[0]
 
 
 # Password validation
