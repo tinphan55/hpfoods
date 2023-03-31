@@ -66,6 +66,8 @@ class CartItems(models.Model):
     class Meta:
         verbose_name = 'Mua hàng'
         verbose_name_plural = 'Mua hàng'
+    def __str__(self):
+        return str(self.product) 
     
     
     def save(self, *args, **kwargs):
@@ -111,6 +113,8 @@ class CartTransport(models.Model):
     class Meta:
         verbose_name = 'Giao hàng'
         verbose_name_plural = 'Giao hàng'
+    def __str__(self):
+        return str(self.partner) 
 
     @property
     def str_cost(self):
