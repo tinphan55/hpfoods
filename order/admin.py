@@ -27,7 +27,7 @@ class CartAdmin(admin.ModelAdmin):
 
     def image_tag(self, obj):
         member = Member.objects.filter(id_member_id =obj.user_id).first()
-        if member.avatar:
+        if member is not None and member.avatar:
             return format_html('<img src="{}" style="border-radius: 50%; width: 40px; height: 40px; object-fit: cover;"/>'.format(member.avatar.url))
         else:
             return format_html('<img src="/media/member/default-image.jpg"style="border-radius: 50%; width: 40px; height: 40px; object-fit: cover;"/>')                   
