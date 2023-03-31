@@ -8,10 +8,11 @@ from products.models import Product
 # Create your models here.
 
 class Cart(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(default=datetime.now)
-    note = models.TextField(max_length=500, null= True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, 
+         verbose_name='Người tạo')
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name='Khách hàng')
+    created_at = models.DateTimeField(default=datetime.now, verbose_name='Ngày tạo')
+    note = models.TextField(max_length=500, null= True, blank=True, verbose_name='Ghi chú')
  
     class Meta:
         verbose_name = 'Đơn hàng'
@@ -25,11 +26,13 @@ class Cart(models.Model):
     @property
     def total_raw (self):
         items= CartItems.objects.filter(cart = self.pk)
-        total = sum(i.total_items for i in items)
+        ship= CartTransport.objects.filter(cart = self.pk)
+        total = sum(i.total_items for i in items) + sum(j.cost for j in ship)
         return total
     @property
     def total(self):
         return  '{:,.0f}'.format(self.total_raw)
+    
     @property
     def total_discount_raw (self):
         items= CartItems.objects.filter(cart = self.pk)
@@ -51,14 +54,15 @@ class Cart(models.Model):
     
 
 class CartItems(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, 
+                                verbose_name='Sản phẩm')
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)  
-    created_at = models.DateTimeField(default=datetime.now)
-    price = models.FloatField(blank=True, default=0)
-    qty = models.IntegerField(default=1)
-    discount = models.IntegerField(null= True, blank=True, default=0)
-    is_discount = models.BooleanField(default=False)  
-    total_items = models.IntegerField(default=0)
+    created_at = models.DateTimeField(default=datetime.now, verbose_name='Ngày tạo')
+    price = models.FloatField(blank=True, default=0, verbose_name='Giá bán')
+    qty = models.IntegerField(default=1, verbose_name='Số lượng')
+    discount = models.IntegerField(null= True, blank=True, default=0, verbose_name='Giảm giá')
+    is_discount = models.BooleanField(default=False, verbose_name='Có giảm giá')  
+    total_items = models.IntegerField(default=0, verbose_name='Tổng giá')
     class Meta:
         verbose_name = 'Mua hàng'
         verbose_name_plural = 'Mua hàng'
@@ -90,3 +94,20 @@ class CartItems(models.Model):
     def str_total_items(self):
         total_items = self.total_items - self.discount
         return '{:,.0f}'.format( total_items)
+
+class CartTransport(models.Model):
+    PARTNER_CHOICES = (
+        ('Viettel', 'Viettel'),
+        ('ghn', 'Giao hàng nhanh'),
+        ('ghtk', 'Giao hàng tiết kiệm'),
+        ('hbfoods', 'HPfoods'),
+        ('other', 'Khác'),
+    )
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)  
+    partner = models.CharField(max_length=50, choices=PARTNER_CHOICES, 
+             default='hbfoods',  verbose_name = 'Đơn vị giao hàng')
+    cost = models.FloatField(default=0, verbose_name = 'Chi phí')
+    note = models.TextField(max_length=500, null= True, blank=True, verbose_name='Ghi chú')
+    class Meta:
+        verbose_name = 'Giao hàng'
+        verbose_name_plural = 'Giao hàng'

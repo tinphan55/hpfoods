@@ -61,7 +61,7 @@
 			}
 
 			.invoice-box table tr.details td {
-				padding-bottom: 20px;
+				padding-bottom: 5px;
 			}
 
 			.invoice-box table tr.item td {
@@ -146,7 +146,7 @@ table td {
 			}
 
 			table tfoot td {
-  padding: 20px 20px;
+  padding: 5px ;
   background: #FFFFFF;
   border-bottom: none;
   font-size: 1em;
@@ -213,19 +213,18 @@ table tfoot tr td:first-child {
 						</table>
 					</td>
 				</tr>
-
+				{% if ship %}
 				<tr class="heading">
 					<td>Vận chuyển</td>
-
 					<td>Phí</td>
 				</tr>
-
+				{% for item in ship %}
 				<tr class="details">
-					<td>Check</td>
-
-					<td>1000</td>
+					<td>{{item.partner.name}}</td>
+					<td>{{item.cost}}</td>
 				</tr>
-
+				{% endfor %}
+				{% endif %}
 				<table border="0" cellspacing="0" cellpadding="0">
 					<thead>
 					  <tr>

@@ -6,7 +6,8 @@ from products.functions import *
 class ImportMaterialAdmin(admin.ModelAdmin):
     model = ImportMaterial
     list_display= ('name', 'weight', 'cost_price', 'created_at') 
-    
+    list_filter = ('created_at',)
+    search_fields = ('name__name',)
   
     
 
@@ -20,6 +21,8 @@ class ProductCostAdmin (admin.TabularInline):
 class ProductAdmin (admin.ModelAdmin):
     inlines = [ProductItemsAdmin,ProductCostAdmin]
     list_display = ('name','is_available','cost_price', 'unit_price','discount' )
+    list_filter = ('created_at','is_available')
+    search_fields = ('name',)
     def cost_price(self, obj):
         cost = cost_price_product(obj.pk)
         return '{:,.0f}'.format(cost)
@@ -39,7 +42,8 @@ def sold_weight(pk):
 class MaterialAdmin(admin.ModelAdmin):
     model= Material
     list_display = ('name','is_available','available_weight','sold_weight', 'str_import_weight', 'str_loss_weight')
-
+    list_filter = ('created_at','is_available')
+    search_fields = ('name',)
     def sold_weight(self, obj):
         weight = sold_weight(obj.pk)
         return '{:,.0f}'.format(weight)
@@ -61,6 +65,8 @@ class MaterialAdmin(admin.ModelAdmin):
 class MaterialLossAdmin(admin.ModelAdmin):
     models = MaterialLoss
     list_display = ('name', 'created_at','weight')
+    list_filter = ('created_at',)
+    search_fields = ('name__name',)
     
 # Register your models here.
 admin.site.register(Category)

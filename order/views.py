@@ -9,11 +9,13 @@ def billdetail(request, pk):
     template = loader.get_template('bills/bill.html')
     cart = Cart.objects.get(pk=pk)
     items = CartItems.objects.filter(cart = pk)
+    ship = CartTransport.objects.filter(cart = pk)
     context = {
         'created_at':cart.created_at,
         'client': cart.client,
         'items':items,
-        'cart':cart
+        'cart':cart,
+        'ship':ship
 
     }
     return HttpResponse(template.render(context, request))
