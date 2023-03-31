@@ -98,10 +98,10 @@ class CartItems(models.Model):
 class CartTransport(models.Model):
     PARTNER_CHOICES = (
         ('Viettel', 'Viettel'),
-        ('ghn', 'Giao hàng nhanh'),
-        ('ghtk', 'Giao hàng tiết kiệm'),
-        ('hbfoods', 'HPfoods'),
-        ('other', 'Khác'),
+        ('Giao hàng nhanh', 'Giao hàng nhanh'),
+        ('Giao hàng tiết kiệm', 'Giao hàng tiết kiệm'),
+        ('HPfoods', 'HPfoods'),
+        ('Khác', 'Khác'),
     )
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)  
     partner = models.CharField(max_length=50, choices=PARTNER_CHOICES, 
@@ -111,3 +111,8 @@ class CartTransport(models.Model):
     class Meta:
         verbose_name = 'Giao hàng'
         verbose_name_plural = 'Giao hàng'
+
+    @property
+    def str_cost(self):
+        price = self.cost
+        return '{:,.0f}'.format(price)
