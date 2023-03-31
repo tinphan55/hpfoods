@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from order.models import *
+from django.http import HttpResponsePermanentRedirect
 
 
 
@@ -29,3 +30,7 @@ def pdf(request, pk):
     response['Content-Disposition'] = f'filename=bill_{pk}.pdf'
     pisa.CreatePDF(html, dest=response, link_callback=fetch_resources)
     return response
+
+
+def redirect_view(request):
+    return HttpResponsePermanentRedirect('https://shopee.vn/hpfoods?gidzl=7u7qR0_WPcGPdVLh1VvbPnALz6mOy3Cn3PltRaYjDpGDnlTl7ArcO0h7zJiQzpKm3vpnCJCaKw8v2k5kOW')
