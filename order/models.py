@@ -23,19 +23,29 @@ class Cart(models.Model):
     def return_id_cart(self):
         return self.id
     @property
-    def total (self):
+    def total_raw (self):
         items= CartItems.objects.filter(cart = self.pk)
         total = sum(i.total_items for i in items)
         return total
     @property
-    def total_discount (self):
+    def total(self):
+        return  '{:,.0f}'.format(self.total_raw)
+    @property
+    def total_discount_raw (self):
         items= CartItems.objects.filter(cart = self.pk)
         total = sum(i.discount for i in items)
         return total
+    @property
+    def total_discount(self):
+        return  '{:,.0f}'.format(self.total_discount_raw)
         
     @property
-    def net_total (self):
-        return self.total -self.total_discount
+    def net_total_raw (self):
+        return self.total_raw -self.total_discount_raw
+    
+    @property
+    def net_total(self):
+        return  '{:,.0f}'.format(self.net_total_raw)
     
 
     
@@ -49,6 +59,10 @@ class CartItems(models.Model):
     discount = models.IntegerField(null= True, blank=True, default=0)
     is_discount = models.BooleanField(default=False)  
     total_items = models.IntegerField(default=0)
+    class Meta:
+        verbose_name = 'Mua hàng'
+        verbose_name_plural = 'Mua hàng'
+    
     
     def save(self, *args, **kwargs):
         self.price = self.product.unit_price
@@ -58,11 +72,16 @@ class CartItems(models.Model):
         else:
             self.discount = 0
         super(CartItems, self).save(*args, **kwargs)
+    
 
     @property
     def str_price(self):
         price = self.price
         return '{:,.0f}'.format(price)
+    @property
+    def str_qty(self):
+        qty = self.qty
+        return '{:,.0f}'.format(qty)
     @property
     def str_discount(self):
         discount = self.discount

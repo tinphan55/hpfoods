@@ -6,6 +6,9 @@ from products.functions import *
 class ImportMaterialAdmin(admin.ModelAdmin):
     model = ImportMaterial
     list_display= ('name', 'weight', 'cost_price', 'created_at') 
+    
+  
+    
 
 class ProductItemsAdmin (admin.TabularInline):
     model = ProductItem
@@ -19,7 +22,8 @@ class ProductAdmin (admin.ModelAdmin):
     list_display = ('name','is_available','cost_price', 'unit_price','discount' )
     def cost_price(self, obj):
         cost = cost_price_product(obj.pk)
-        return cost
+        return '{:,.0f}'.format(cost)
+    cost_price.short_description = 'Giá thành'
          
 
 
@@ -34,15 +38,25 @@ def sold_weight(pk):
 
 class MaterialAdmin(admin.ModelAdmin):
     model= Material
-    list_display = ('name','is_available','available_weight','sold_weight', 'import_weight', 'loss_weight')
+    list_display = ('name','is_available','available_weight','sold_weight', 'str_import_weight', 'str_loss_weight')
 
     def sold_weight(self, obj):
         weight = sold_weight(obj.pk)
-        return weight
+        return '{:,.0f}'.format(weight)
+    sold_weight.short_description = 'Khối lượng bán'
       
     def available_weight(self, obj):
         available =  obj.import_weight - obj.loss_weight - sold_weight(obj.pk)
-        return available 
+        return '{:,.0f}'.format(available)
+    available_weight.short_description = 'Khối lượng Khả dụng'
+
+    def str_import_weight(self, obj):
+        return '{:,.0f}'.format(obj.import_weight)
+    str_import_weight.short_description = 'Khối lượng nhập'
+
+    def str_loss_weight(self, obj):
+        return '{:,.0f}'.format(obj.loss_weight)
+    str_loss_weight.short_description = 'Khối lượng mất'
 
 class MaterialLossAdmin(admin.ModelAdmin):
     models = MaterialLoss

@@ -1,3 +1,4 @@
+
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
     "site_title": "Shop Admin",
@@ -10,11 +11,11 @@ JAZZMIN_SETTINGS = {
     "login_logo_dark": None,
 
     # CSS classes that are applied to the logo above
-    "site_logo_classes": "img-circle",
+    "site_logo_classes": "img-circle" ,
 
     # Relative path to a favicon for your site, will default to site_logo if absent (ideally 32x32 px)
     "site_icon": "/bills/img/logo.jpg",
-    "site_logo": "/bills/img/logo.jpg",
+    "site_logo": "/bills/img/logosmall.jpg",
 
 
     # Welcome text on the login screen
@@ -101,22 +102,20 @@ JAZZMIN_SETTINGS = {
         "auth.Group": "fas fa-users",
         "members.Member": "fas fa-user-shield",
         "order.Cart": "fas fa-shopping-cart",
-        "products.product":"fas fa-vest",
-        "services_admin.makeup":"fas fa-magic",
-        "services_admin.photo":"fas fa-camera",
-        "services_admin.accessory":"fas fa-hat-wizard",
-        "services_admin.ranking": "fas fa-star",
-        "services_admin.Tag":"fas fa-tags",
-        "services_admin.VolatilityAccessory":"fas fa-warehouse",
-        "services_admin.ComboItem":"far fa-object-group",
-        "clients.Client":"fas fa-male",
-        "bills.Bill" : "fas fa-receipt",
-        "event_calendar.Event":"far fa-calendar-check",
-        "report.Report":"fas fa-flag-checkered" ,
-        "frontend.layouthomepage":"fas fa-pen",
-        "frontend.blockitems":"fas fa-pen",
-        "frontend.categorydetail":"fas fa-pen",
-        "frontend.clientpotential":"fas fa-person-booth",
+        "products.product":"fas fa-hamburger",
+        "products.material":"fas fa-warehouse",
+        "products.importmaterial":"fas fa-plus-circle",
+        "products.materialloss":"fas fa-hourglass-half",
+        "products.category": "fas fa-star",
+        "products.Tag":"fas fa-tags",
+        "client.Client":"fas fa-male",
+        # "bills.Bill" : "fas fa-receipt",
+        # "event_calendar.Event":"far fa-calendar-check",
+        # "report.Report":"fas fa-flag-checkered" ,
+        # "frontend.layouthomepage":"fas fa-pen",
+        # "frontend.blockitems":"fas fa-pen",
+        # "frontend.categorydetail":"fas fa-pen",
+        # "frontend.clientpotential":"fas fa-person-booth",
 
 
 
@@ -158,7 +157,7 @@ JAZZMIN_SETTINGS = {
     "changeform_format": "horizontal_tabs",
     # override change forms on a per modeladmin basis
     "changeform_format_overrides": 
-    {"auth.user": "collapsible", "order.Cart": "vertical_tabs", "bills.Bill":"single"},
+    {"auth.user": "collapsible", "order.Cart": "carousel"},
 
 
    

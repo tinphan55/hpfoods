@@ -242,9 +242,9 @@ table tfoot tr td:first-child {
 							<tr>
 							  <td class="no">{{ forloop.counter }}</td>
 							  <td class="desc">{{item.product}}</td>
-							  <td class="unit">{{ item.price }}</td>
-							  <td class="qty">{{ item.qty }}</td>
-							  <td class="total">{{ item.discount }}</td>
+							  <td class="unit">{{ item.str_price }}</td>
+							  <td class="qty">{{ item.str_qty }}</td>
+							  <td class="total">{{ item.str_discount }}</td>
 							</tr>
 						  {% endfor %}
 					</tbody>
