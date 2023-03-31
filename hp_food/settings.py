@@ -110,7 +110,7 @@ DATABASES_LIST = [{
         'PORT': '5432',
     }
 }]
-DATABASES = DATABASES_LIST[1]
+DATABASES = DATABASES_LIST[0]
 
 
 # Password validation
