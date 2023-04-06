@@ -216,7 +216,9 @@ table tfoot tr td:first-child {
 								<td>
 									{{client.first_name}} {{client.last_name}}<br />
 									{{client.phone}}<br />
+									{% if client.address %}
 									{{client.address}}
+									{% endif %}
 								</td>
 							</tr>
 						</table>
