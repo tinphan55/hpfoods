@@ -6,18 +6,24 @@
 		<title>Hóa đơn bán hàng {{pk}}</title>
 
 		<style>
-			
-			.invoice-box {
-				max-width: 800px;
-				margin: auto;
-				padding: 10px;
-				border: 1px solid #eee;
-				box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-				font-size: 16px;
-				line-height: 24px;
-				font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-				color: #555;
-			}
+		
+		@font-face {
+    	font-family: 'Source Sans Pro';
+    	src: url("{% static 'bills/fonts/SourceSansPro-Regular.ttf' %}") format('truetype');
+					}  
+
+		.invoice-box {
+			max-width: 500px;
+			margin: auto;
+			padding: 10px;
+			border: 1px solid #eee;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+			font-size: 16px;
+			line-height: 24px;
+			font-family: 'Source Sans Pro', 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+			color: #555;
+			font-weight: 600;
+		}
 
 			.invoice-box table {
 				width: 100%;
@@ -57,7 +63,7 @@
 			.invoice-box table tr.heading td {
 				background: #eee;
 				border-bottom: 1px solid #ddd;
-				font-weight: bold;
+				font-weight: 800;
 			}
 
 			.invoice-box table tr.details td {
@@ -78,7 +84,8 @@
 				font-weight: bold;
 			}
 
-			@media only screen and (max-width: 600px) {
+			@media only screen and (max-width: 600px) 
+			{
 				.invoice-box table tr.top table td {
 					width: 100%;
 					display: block;
@@ -112,7 +119,7 @@ table td {
 table th {
   white-space: nowrap;        
   border-bottom: 1px solid #ddd;
-  font-weight: bold;
+  font-weight: 600;
   font-size: 1rem;
   background: #eee;
 }
@@ -153,6 +160,7 @@ table td {
   white-space: nowrap; 
   border-top: 1.5px solid #AAAAAA; 
   text-align: right;
+  font-weight: 900;
   
 }
 
@@ -162,6 +170,7 @@ table tfoot tr:last-child td {
   font-size: 1em;
   border-top: 2px solid #57B223; 
   text-align: right;
+  font-weight: 900;
 
 }
 
@@ -180,7 +189,7 @@ table tfoot tr td:first-child {
 							<tr>
 								<td class="title">
 									<div id="logo"> 
-									<img src="{% static 'bills/img/logo.jpg' %}" style="width: 100%; ">
+										<img src="{% static 'bills/img/logo.jpg' %}" style="width: 100%; ">
 								</div>
 								</td>
 
@@ -200,7 +209,7 @@ table tfoot tr td:first-child {
 						<table>
 							<tr>
 								<td>
-									Mã đơn #: 123<br />
+									Mã đơn: #{{cart.id}}<br />
 									Ngày tạo: {{created_at}}<br />
 								</td>
 
@@ -212,7 +221,7 @@ table tfoot tr td:first-child {
 							</tr>
 						</table>
 					</td>
-				</tr>
+				<!-- </tr>
 				{% if ship %}
 				<tr class="heading">
 					<td>Vận chuyển</td>
@@ -224,7 +233,7 @@ table tfoot tr td:first-child {
 					<td>{{item.str_cost}}</td>
 				</tr>
 				{% endfor %}
-				{% endif %}
+				{% endif %} -->
 				<table border="0" cellspacing="0" cellpadding="0">
 					<thead>
 					  <tr>
@@ -232,7 +241,7 @@ table tfoot tr td:first-child {
 						<th class="desc">SẢN PHẨM</th>
 						<th class="unit">ĐƠN GIÁ</th>
 						<th class="qty">SỐ LƯỢNG</th>
-						<th class="total">GIẢM GIÁ</th>
+						<th class="total">TỔNG</th>
 					  </tr>
 					</thead>
 
@@ -243,7 +252,7 @@ table tfoot tr td:first-child {
 							  <td class="desc">{{item.product}}</td>
 							  <td class="unit">{{ item.str_price }}</td>
 							  <td class="qty">{{ item.str_qty }}</td>
-							  <td class="total">{{ item.str_discount }}</td>
+							  <td class="total">{{ item.str_total_items }}</td>
 							</tr>
 						  {% endfor %}
 					</tbody>
@@ -251,13 +260,13 @@ table tfoot tr td:first-child {
 					<tfoot>
 						<tr>
 						  <td colspan="2"></td>
-						  <td colspan="2">Tổng giá trước giảm</td>
+						  <td colspan="2">Tổng tiền hàng</td>
 						  <td> {{cart.total}} </td>
 						</tr>
 						<tr>
 						  <td colspan="2"></td>
-						  <td colspan="2">Giảm giá</td>
-						  <td>{{cart.total_discount}}</td>
+						  <td colspan="2">Phí vận chuyển</td>
+						  <td>{{cart.total_ship}}</td>
 						</tr>
 						<tr>
 						  <td colspan="2"></td>
