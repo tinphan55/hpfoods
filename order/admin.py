@@ -19,7 +19,7 @@ class CartTransportAdmin(admin.StackedInline):
 class CartAdmin(admin.ModelAdmin):
     inlines =[CartItemAdmin, CartTransportAdmin]
     model = Cart
-    list_display = ('image_tag','user','client', 'created_at', 'total', 'total_discount','net_total','title_with_link')
+    list_display = ('image_tag','user','client', 'created_at', 'total','total_ship','net_total','title_with_link')
     list_filter = ('created_at',)
     search_fields = ('client__phone',)
     list_display_links = ('client',)
@@ -40,15 +40,23 @@ class CartAdmin(admin.ModelAdmin):
             return format_html('<img src="/media/member/default-image.jpg"style="border-radius: 50%; width: 40px; height: 40px; object-fit: cover;"/>')                   
 
     image_tag.short_description = 'avatar'
-    @admin.display(description='Tổng tiền trước giảm')
+    @admin.display(description='Tổng tiền hàng')
     def total(self, obj):
         return  obj.total
-    @admin.display(description='Tổng giảm giá')
-    def total_discount(self, obj):
-        return  obj.total_discount
+    @admin.display(description='Phí ship')
+    def total_ship(self, obj):
+         return  obj.total_ship
     @admin.display(description='Tổng thanh toán')
     def net_total(self, obj):
         return  obj.net_total
+    
+    # def pdf(self, obj):
+    #     cart_item = obj.cartitems_set.first()
+    #     if cart_item is None:
+    #         return "None" 
+    #     else:
+    #         url = reverse('order:pdf', args=[obj.pk])
+    #         return format_html("<a href='{}' target='_blank' style='background-color: #40a339; border-radius: 5px; color: white; padding: 5px;'>Tải pdf</a>", url)
    
 # Register your models here.
 admin.site.register(Cart, CartAdmin)

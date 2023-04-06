@@ -6,4 +6,5 @@ app_name = 'order'
 urlpatterns = [
     path('bills/<int:pk>', views.billdetail, name='details'),
     path('', views.redirect_view),
+    path('pdf/<int:pk>',views.pdf, name = 'pdf')
 ]

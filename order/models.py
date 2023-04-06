@@ -23,11 +23,12 @@ class Cart(models.Model):
     
     def return_id_cart(self):
         return self.id
+    
+    # tổng bao gồm có giảm giá
     @property
     def total_raw (self):
         items= CartItems.objects.filter(cart = self.pk)
-        ship= CartTransport.objects.filter(cart = self.pk)
-        total = sum(i.total_items for i in items) + sum(j.cost for j in ship)
+        total = sum(i.total_items for i in items)
         return total
     @property
     def total(self):
@@ -41,10 +42,20 @@ class Cart(models.Model):
     @property
     def total_discount(self):
         return  '{:,.0f}'.format(self.total_discount_raw)
-        
+    
+    @property
+    def total_ship_raw (self):
+        ship= CartTransport.objects.filter(cart = self.pk)
+        return sum(j.cost for j in ship)
+    @property
+    def total_ship(self):
+        return  '{:,.0f}'.format(self.total_ship_raw)
+    
+
+    # tổng cần thu, gồm cả phí ship 
     @property
     def net_total_raw (self):
-        return self.total_raw -self.total_discount_raw
+        return self.total_raw + self.total_ship_raw
     
     @property
     def net_total(self):
@@ -61,7 +72,8 @@ class CartItems(models.Model):
     price = models.FloatField(blank=True, default=0, verbose_name='Giá bán')
     qty = models.IntegerField(default=1, verbose_name='Số lượng')
     discount = models.IntegerField(null= True, blank=True, default=0, verbose_name='Giảm giá')
-    is_discount = models.BooleanField(default=False, verbose_name='Có giảm giá')  
+    is_discount = models.BooleanField(default=False,
+        help_text="Nếu có giảm giá chọn", verbose_name='Có giảm giá')  
     total_items = models.IntegerField(default=0, verbose_name='Tổng giá')
     class Meta:
         verbose_name = 'Mua hàng'
@@ -71,12 +83,13 @@ class CartItems(models.Model):
     
     
     def save(self, *args, **kwargs):
-        self.price = self.product.unit_price
-        self.total_items = self.price*self.qty
         if self.is_discount == True:
-            self.discount = self.product.discount* self.qty
+            self.discount = self.product.discount
+            
         else:
             self.discount = 0
+        self.price = self.product.unit_price - self.discount
+        self.total_items = self.price*self.qty 
         super(CartItems, self).save(*args, **kwargs)
     
 
@@ -94,7 +107,7 @@ class CartItems(models.Model):
         return '{:,.0f}'.format( discount)
     @property
     def str_total_items(self):
-        total_items = self.total_items - self.discount
+        total_items = self.total_items 
         return '{:,.0f}'.format( total_items)
 
 class CartTransport(models.Model):
