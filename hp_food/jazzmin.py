@@ -102,6 +102,7 @@ JAZZMIN_SETTINGS = {
         "auth.Group": "fas fa-users",
         "members.Member": "fas fa-user-shield",
         "order.Cart": "fas fa-shopping-cart",
+        "order.LossCartItems": "fas fa-minus",
         "products.product":"fas fa-hamburger",
         "products.material":"fas fa-warehouse",
         "products.importmaterial":"fas fa-plus-circle",

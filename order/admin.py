@@ -20,6 +20,7 @@ class CartAdmin(admin.ModelAdmin):
     inlines =[CartItemAdmin, CartTransportAdmin]
     model = Cart
     list_display = ('image_tag','user','client', 'created_at', 'total','total_ship','net_total','title_with_link')
+    fields = ('user','client','note', 'created_at')
     list_filter = ('created_at',)
     search_fields = ('client__phone',)
     list_display_links = ('client',)
@@ -57,6 +58,26 @@ class CartAdmin(admin.ModelAdmin):
     #     else:
     #         url = reverse('order:pdf', args=[obj.pk])
     #         return format_html("<a href='{}' target='_blank' style='background-color: #40a339; border-radius: 5px; color: white; padding: 5px;'>Tải pdf</a>", url)
-   
-# Register your models here.
+
+    
+class LossCartItemsAdmin(admin.ModelAdmin):
+    def get_queryset(self, request):
+         qs = super().get_queryset(request)
+         return qs.filter(cart__is_loss=True)
+    model= LossCartItems
+    fields = ['product','qty','created_at','image','user', 'description' ]
+    list_display = ['product','qty','created_at','image_tag','user' ]
+    list_filter = ('created_at',)
+    search_fields = ('product__name',)
+    @admin.display(description='Hình ảnh')
+    def image_tag(self, obj):
+        if obj.image:
+            return format_html('<a href="{}" target="_blank"><img src="{}" width="100"/></a>'.format(obj.image.url, obj.image.url))
+        else:
+            return None
+    
+
+
+
 admin.site.register(Cart, CartAdmin)
+admin.site.register(LossCartItems, LossCartItemsAdmin)
